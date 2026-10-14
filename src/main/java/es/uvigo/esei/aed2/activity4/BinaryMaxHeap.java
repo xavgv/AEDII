@@ -94,7 +94,6 @@ public class BinaryMaxHeap<T extends Comparable<T>> implements MaxHeap<T> {
    * @param hollow la posición del elemento a mover.
    */
   private void sink(int hollow) {
-    int size = this.arrayHeap.size();
     while (2 * hollow < this.arrayHeap.size()) {
       int child = 2 * hollow;
 
@@ -159,7 +158,11 @@ public class BinaryMaxHeap<T extends Comparable<T>> implements MaxHeap<T> {
    */
   @Override
   public void insert(T value) throws NullPointerException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (value == null) {
+      throw new NullPointerException("The value cant be null");
+    }
+
+    this.arrayHeap.add(value);
   }
 
   /**
