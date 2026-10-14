@@ -170,7 +170,13 @@ public class BinaryMaxHeap<T extends Comparable<T>> implements MaxHeap<T> {
    */
   @Override
   public void orderHeap() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if  (this.isEmpty()) {
+      return;
+    }
+    else{
+      for (int i = (this.arrayHeap.size() - 1) / 2; i >= 1; i--) {
+      this.sink(i);
+      }
+    }
   }
-
 }
