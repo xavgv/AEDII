@@ -95,7 +95,13 @@ public class HashMap<K,V> implements Map<K,V> {
 
   @Override
   public V remove(K key) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    int index = calculateIndex(key);
+    V element = get(key);
+    for (int i = index; i < CAPACITY - 1; i++) {
+      map[i] = map[i + 1];
+    }
+    map[CAPACITY] = null;
+    return element;
   }
 
   @Override
