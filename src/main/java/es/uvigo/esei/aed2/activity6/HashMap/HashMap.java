@@ -45,7 +45,7 @@ public class HashMap<K,V> implements Map<K,V> {
   public HashMap() {
     this(CAPACITY);
   }
-
+ //Implementado
   @SuppressWarnings("unchecked")
   private HashMap(int capacity) throws IllegalArgumentException {
     if (capacity <= 0) {
@@ -57,15 +57,15 @@ public class HashMap<K,V> implements Map<K,V> {
       map[i] = new LinkedList<>();
     }
   }
-
+  //Implementado
   private int calculateIndex(K key) {
     return Math.abs(key.hashCode()) % map.length;}
-
+  //Implementado
   @Override
   public int size() {
     return size;
   }
-
+  //Implementado
   @Override
   public V get(K key) {
     int index = calculateIndex(key);
@@ -74,7 +74,7 @@ public class HashMap<K,V> implements Map<K,V> {
     }
     return map[index].getFirst().getValue();
   }
-
+  //Implementado
   @Override
   public void add(K key, V value) throws NullPointerException {
     if (key == null || value == null){
@@ -92,16 +92,14 @@ public class HashMap<K,V> implements Map<K,V> {
       }
     }
   }
-
+  
   @Override
   public V remove(K key) {
     int index = calculateIndex(key);
-    V element = get(key);
-    for (int i = index; i < CAPACITY - 1; i++) {
-      map[i] = map[i + 1];
-    }
-    map[CAPACITY] = null;
-    return element;
+    V value = map[index].get(0).getValue();
+    map[index].set(0, null);
+    size--;
+    return value;
   }
 
   @Override
