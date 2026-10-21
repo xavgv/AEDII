@@ -52,17 +52,17 @@ public class HashMap<K,V> implements Map<K,V> {
   }
 
   private int calculateIndex(K key) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
+    return Math.abs(key.hashCode()) % map.length;}
 
   @Override
   public int size() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return size;
   }
 
   @Override
   public V get(K key) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    int index = calculateIndex(key);
+    return map[index].get(index).getValue();
   }
 
   @Override
