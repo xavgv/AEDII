@@ -97,8 +97,10 @@ public class HashMap<K,V> implements Map<K,V> {
   public V remove(K key) {
     int index = calculateIndex(key);
     V element = get(key);
-    map[index] = 
-
+    for (int i = index; i < CAPACITY - 1; i++) {
+      map[i] = map[i + 1];
+    }
+    map[CAPACITY] = null;
     return element;
   }
 
