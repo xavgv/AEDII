@@ -132,7 +132,12 @@ public class HashMap<K,V> implements Map<K,V> {
 
   @Override
   public void clear() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    for(List<Pair<K,V>> lista : map){
+      for (Pair<K,V> par : lista){
+        K key = par.getKey();
+        remove(key);
+      }
+    }
   }
 
   @Override
