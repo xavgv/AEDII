@@ -72,24 +72,24 @@ public class HashMap<K,V> implements Map<K,V> {
     if (map[index].isEmpty()) {
       return null;
     }
-    return map[index].getFirst().getValue();
+    List<Pair<K,V>> lista = map[index];
+    for(Pair<K,V> par : lista){
+      if (par.getKey() == key){
+        return par.getValue();
+      }
+    }
+    return null;
   }
   //Implementado
   @Override
   public void add(K key, V value) throws NullPointerException {
+    Pair<K, V> pair = new Pair<>(key, value);
     if (key == null || value == null){
       throw new NullPointerException("Key or value is null");
     }
     else{
       int index = calculateIndex(key);
-      if (!map[index].isEmpty()) {
-        map[index].getFirst().setValue(value);
-      }
-      else {
-        Pair<K, V> pair = new Pair<>(key, value);
-        map[index].add(pair);
-        size++;
-      }
+      map[index].addLast(pair);
     }
   }
   
