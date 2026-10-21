@@ -97,10 +97,15 @@ public class HashMap<K,V> implements Map<K,V> {
   @Override
   public V remove(K key) {
     int index = calculateIndex(key);
-    V value = map[index].get(0).getValue();
-    map[index].set(0, null);
-    size--;
-    return value;
+    V v = null;
+    List<Pair<K,V>> lista = map[index];
+    for (Pair<K,V> par : lista){
+      if (par.getKey() == key){
+        v = par.getValue();
+        lista.remove(par);
+      }
+    }
+    return v;
   }
 
   @Override
