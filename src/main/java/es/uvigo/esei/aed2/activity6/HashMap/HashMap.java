@@ -72,7 +72,11 @@ public class HashMap<K,V> implements Map<K,V> {
 
   @Override
   public V remove(K key) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    int index = calculateIndex(key);
+    V element = get(key);
+    map[index] = 
+
+    return element;
   }
 
   @Override
