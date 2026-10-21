@@ -1,6 +1,7 @@
 package es.uvigo.esei.aed2.activity6.HashMap;
 
 import java.util.Iterator;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -104,12 +105,24 @@ public class HashMap<K,V> implements Map<K,V> {
 
   @Override
   public Set<K> getKeys() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    Set<K> set = new HashSet<>();
+    for (List<Pair<K,V>> i : map){
+      for (Pair<K,V> par : i){
+        set.add(par.getKey());
+      }
+    }
+    return set;
   }
 
   @Override
   public Iterator<V> getValues() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    List<V> values = new LinkedList<>();
+    for (List<Pair<K, V>> bucket : map) {
+      for (Pair<K, V> pair : bucket) {
+        values.add(pair.getValue());
+      }
+    }
+    return values.iterator();
   }
 
   @Override
