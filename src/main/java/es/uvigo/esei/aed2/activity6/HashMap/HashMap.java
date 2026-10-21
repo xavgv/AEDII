@@ -48,7 +48,14 @@ public class HashMap<K,V> implements Map<K,V> {
 
   @SuppressWarnings("unchecked")
   private HashMap(int capacity) throws IllegalArgumentException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (capacity <= 0) {
+      throw new IllegalArgumentException("Capacity must be greater than 0");
+    }
+    this.size = 0;
+    this.map = new LinkedList[capacity];
+    for (int i = 0; i < capacity; i++) {
+      map[i] = new LinkedList<>();
+    }
   }
 
   private int calculateIndex(K key) {
@@ -62,12 +69,28 @@ public class HashMap<K,V> implements Map<K,V> {
   @Override
   public V get(K key) {
     int index = calculateIndex(key);
-    return map[index].get(index).getValue();
+    if (map[index].isEmpty()) {
+      return null;
+    }
+    return map[index].getFirst().getValue();
   }
 
   @Override
   public void add(K key, V value) throws NullPointerException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (key == null || value == null){
+      throw new NullPointerException("Key or value is null");
+    }
+    else{
+      int index = calculateIndex(key);
+      if (!map[index].isEmpty()) {
+        map[index].getFirst().setValue(value);
+      }
+      else {
+        Pair<K, V> pair = new Pair<>(key, value);
+        map[index].add(pair);
+        size++;
+      }
+    }
   }
 
   @Override
