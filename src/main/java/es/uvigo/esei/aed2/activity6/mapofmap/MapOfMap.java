@@ -39,82 +39,161 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import javax.xml.transform.Source;
+
 public class MapOfMap<T, E> implements Graph<T, E> {
 
   private final Map<Vertex<T>, Map<Vertex<T>, E>> mapOfVertices;
 
   public MapOfMap() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    this.mapOfVertices = new HashMap<>();
   }
   
   @Override
   public boolean isEmpty() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return mapOfVertices.size() == 0;
   }
 
   @Override
   public int numberOfVertices() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return mapOfVertices.size();
   }
 
   @Override
   public boolean containsVertex(Vertex<T> vertex) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return mapOfVertices.get(vertex) != null;
   }
 
   @Override
   public boolean containsEdge(Vertex<T> source, Vertex<T> target, E label) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (source == null || target == null) {
+      throw new NullPointerException("Source and target vertices cannot be null");
+    }
+    if (!containsVertex(source) || !containsVertex(target)) {
+      throw new IllegalArgumentException("Source and target vertices must be in the graph");
+    }
+    Map<Vertex<T>, E> edgesFromSource = mapOfVertices.get(source);
+    if (edgesFromSource == null) {
+      return false;
+    }
+    E edgeLabel = edgesFromSource.get(target);
+    return Objects.equals(edgeLabel, label);
+
+    
   }
 
   @Override
   public Set<Vertex<T>> getVertices() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    Set<Vertex<T>> vertices = new HashSet<>();
+    mapOfVertices.forEach((vertex, edges) -> vertices.add(vertex));
+    return vertices;
   }
 
   @Override
   public Set<Edge<T, E>> getEdges() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    Set<Edge<T, E>> edges = new HashSet<>();
+    mapOfVertices.forEach((source, edgesFromSource) -> {
+      edgesFromSource.forEach((target, label) -> {
+        edges.add(new Edge<>(source, target, label));
+      });
+    });
+    return edges;
   }
 
   @Override
   public Set<Vertex<T>> getAdjacentsVertex(Vertex<T> vertex) throws NullPointerException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (vertex == null) {
+      throw new NullPointerException("Vertex cannot be null");
+    }
+    Map<Vertex<T>, E> edgesFromVertex = mapOfVertices.get(vertex);
+    if (edgesFromVertex == null) {
+      return new HashSet<>();
+    }
+    Set<Vertex<T>> adjacents = new HashSet<>();
+    edgesFromVertex.forEach((adjacent, label) -> adjacents.add(adjacent));
+    return adjacents;
   }
 
   @Override
   public boolean addVertex(Vertex<T> vertex) throws NullPointerException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (vertex == null) {
+      throw new NullPointerException("Vertex cannot be null");
+    }
+    if (containsVertex(vertex)) {
+      return false;
+    }
+    mapOfVertices.add(vertex, new HashMap<>());
+    return true;
   }
 
   @Override
   public boolean addEdge(Vertex<T> source, Vertex<T> target, E label) throws NullPointerException, IllegalArgumentException{
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (source == null || target == null) {
+      throw new NullPointerException("Source and target vertices cannot be null");
+    }
+    if (!containsVertex(source) || !containsVertex(target)) {
+      throw new IllegalArgumentException("Source and target vertices must be in the graph");
+    }
+    Map<Vertex<T>, E> edgesFromSource = mapOfVertices.get(source);
+    if (edgesFromSource == null) {
+      edgesFromSource = new HashMap<>();
+      mapOfVertices.add(source, edgesFromSource);
+    }
+    edgesFromSource.add(target, label);
+    
+    return true;
   }
 
   @Override
   public boolean removeVertex(Vertex<T> vertex) throws NullPointerException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (vertex == null) {
+      throw new NullPointerException("Vertex cannot be null");
+    }
+    if (!containsVertex(vertex)) {
+      return false;
+    }
+    mapOfVertices.remove(vertex);
+    mapOfVertices.forEach((source, edgesFromSource) -> edgesFromSource.remove(vertex));
+    return true;
   }
 
   @Override
   public boolean removeEdge(Vertex<T> source, Vertex<T> target, E label) throws NullPointerException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (source == null || target == null) {
+      throw new NullPointerException("Source and target vertices cannot be null");
+    }
+    if (!containsVertex(source) || !containsVertex(target)) {
+      throw new IllegalArgumentException("Source and target vertices must be in the graph");
+    }
+    Map<Vertex<T>, E> edgesFromSource = mapOfVertices.get(source);
+    if (edgesFromSource == null) {
+      return false;
+    }
+    E edgeLabel = edgesFromSource.get(target);
+    if (!Objects.equals(edgeLabel, label)) {
+      return false;
+    }
+    edgesFromSource.remove(target);
+    return true;
   }
   
   @Override
   public void clear(){
-   throw new UnsupportedOperationException("Not supported yet.");  
+    mapOfVertices.clear();
   }
 
   @Override
   public void forEachVertex(Consumer<Vertex<T>> action){
-    throw new UnsupportedOperationException("Not supported yet.");
+    mapOfVertices.forEach((vertex, edges) -> action.accept(vertex));
   }
 
   @Override
   public void forEachEdge(Consumer<Edge<T, E>> action){
-    throw new UnsupportedOperationException("Not supported yet.");
+    mapOfVertices.forEach((source, edgesFromSource) -> {
+      edgesFromSource.forEach((target, label) -> {
+        action.accept(new Edge<>(source, target, label));
+      });
+    });
   }
 
 }
