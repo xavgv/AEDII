@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import es.uvigo.esei.aed2.graph.Edge;
 import es.uvigo.esei.aed2.graph.Graph;
 import es.uvigo.esei.aed2.graph.Vertex;
 import es.uvigo.esei.aed2.map.Map;
@@ -44,19 +45,55 @@ public class Activity7 {
   //exercise 1
   public static <T, E> Set<Vertex<T>> getPredecessors(Graph<T, E> graph, Vertex<T> vertex) {
     // TODO: Implementa la obtención de predecesores de un vértice en el grafo
-    return new HashSet<>();
+    Set<Vertex<T>> predecessors = new HashSet<>();  //creamos una lista con los precesores
+    if (graph == null || vertex == null){   
+      return predecessors;
+    }
+    for (Edge<T, E> edge : graph.getEdges()) {  //recorre todos los arcos del grafo
+        if (edge.getTarget().equals(vertex)) {  //compara el valor de los vertices de cada arco con el vertice que pasa el metodo
+            predecessors.add(edge.getSource()); //los añade a la lista que creamos
+        }
+    }
+    return predecessors;
   }
 
   //exercise 2
   public static <T, E> boolean isRegular(Graph<T, E> graph) {
-    // TODO: Implementa la comprobación de si el grafo es regular
-    return false;
+    if(graph == null || graph.isEmpty()){
+      return true;    //si el grafo esta vacio asumimos que es regular
+  }
+      Integer expectedDegree = null;    //creamos una variable en la que vamos a guardar el numero de vecinos
+
+    for (Vertex<T> vertex :graph.getVertices()){    //recorremos todos los vertices del grafo
+      Set<Vertex<T>> adjacents = graph.getAdjacentsVertex(vertex);  //metemos en una lista todos los vecinos de cada vertice
+        int degree = (adjacents != null) ? adjacents.size() : 0;    //guardamos este valor 
+
+        if (expectedDegree == null) {
+            expectedDegree = degree;
+        } else if (expectedDegree != degree) {
+            return false;
+        }
+    }
+    return true;
   }
   
   //exercise 3
   public static <T, E> boolean isConnectedFromVertex(Graph<T, E> graph, Vertex<T> vertex) {
     // TODO: Implementa la comprobación de si el grafo es conexo desde un vértice
-    return false;
+    if (graph == null || graph.isEmpty() || vertex == null || !graph.containsVertex(vertex)) {
+        return false;
+    }
+    Set<Vertex<T>> visited = new HashSet<>();
+    Queue<Vertex<T>> queue = new LinkedQueue<>();
+
+    queue.add(vertex);
+    visited.add(vertex);
+
+    while(!queue.isEmpty()){
+      Vertex<T> current = queue.remove();
+
+      for()
+    }
   }
 
   //exercise 4

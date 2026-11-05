@@ -142,7 +142,11 @@ public class HashMap<K,V> implements Map<K,V> {
 
   @Override
   public void forEach(BiConsumer<K, V> action){
-    throw new UnsupportedOperationException("Not supported yet.");
+    for (List<Pair<K, V>> list : this.map){
+      for (Pair<K, V> pair : list) {
+        action.accept(pair.getKey(), pair.getValue());
+      }
+    }
   }
 
   private static class Pair<K, V> {
